@@ -5,6 +5,7 @@ from PIL import Image    # 请先安装Pillow库！
 import os
 from sys import exit
 
+# 格式列表
 FORMAT_LIST = ["jpg", "jpeg", "png", "gif", "bmp", "webp"]
 
 
@@ -31,7 +32,7 @@ def images_to_PDF(path, mode, save_name):
         width = temp.size[0]
         if width > max_width:
             max_width = width
-        if temp.mode in ["RGBA", "LA"]:
+        if temp.mode in ["RGBA", "LA"]:    # 将带A通道转化为白底不带A通道
             temp1 = Image.new("RGB", temp.size, (255, 255, 255))
             temp1.paste(temp, mask=temp.getchannel("A"))
             temp = temp1
@@ -47,7 +48,7 @@ def images_to_PDF(path, mode, save_name):
 
     print("\n正在保存......")
     temp = images[0]
-    if len(images) != 1:
+    if len(images) != 1:    # 保存为PDF
         temp.save(save_name, "PDF", resolution=100.0, save_all=True, append_images=images[1:])
     else:
         temp.save(save_name, "PDF", resolution=100.0, save_all=True)
@@ -62,7 +63,6 @@ def get_PDF_name():
     return save_name
 
 if __name__ == "__main__":
-    single_file = False
     mode_valid = False
     path = input("请输入源文件的路径(空默认为工作目录)：\n")
     if path == "":
